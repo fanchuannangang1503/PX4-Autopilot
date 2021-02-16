@@ -315,7 +315,7 @@ rtps:
     id: 149
   - msg: heater_status
     id: 150
-  - msg: airspeed_selector_wind_estimate
+  - msg: airspeed_wind
     id: 151
   ########## multi topics: begin ##########
   - msg: actuator_controls_0

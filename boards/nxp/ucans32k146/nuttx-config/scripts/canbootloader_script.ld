@@ -1,9 +1,9 @@
 /****************************************************************************
- * boards/arm/s32k1xx/ucans32k146/scripts/flash.ld
+ * nuttx-config/scripts/canbootloader_script.ld
  *
- *   Copyright (C) 2019 Gregory Nutt. All rights reserved.
+ *   Copyright (C) 2021 Gregory Nutt. All rights reserved.
  *   Author: Gregory Nutt <gnutt@nuttx.org>
- *
+  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -44,16 +44,16 @@
  *   SRAM_U 20000000 - 2000efff 60Kb
  */
 
-/* 3 4Kib Sectors 12 Kib for the bootloader
- * 2 4Kib Sectors  8 Kib  for 2 paramater sectors
- * 5 4Kib Sectors 20 Kib reserved
+/* 3 4Kib Sectors 12Kib for the bootloader
+ * 2 4Kib Sectors 8Kib  for 2 paramater sectors
+ * 5 4Kib Sectors 20 K reserved
  */
 
 MEMORY
 {
-  vflash (rx) : ORIGIN = 0x00005000, LENGTH = 1K
-  pflash (rx) : ORIGIN = 0x00005400, LENGTH = 16
-  dflash (rx) : ORIGIN = 0x00005410, LENGTH = 1024K-(20K + 1K + 16)
+  vflash (rx) : ORIGIN = 0x00000000, LENGTH = 1K
+  pflash (rx) : ORIGIN = 0x00000400, LENGTH = 16
+  dflash (rx) : ORIGIN = 0x00000410, LENGTH = 1023K-16
   sram  (rwx) : ORIGIN = 0x1fff0000, LENGTH = 124K
 }
 
@@ -77,15 +77,6 @@ SECTIONS
 
   .text :
   {
-       . = ALIGN(8);
-      /*
-       * This section positions the app_descriptor_t used
-       * by the make_can_boot_descriptor.py tool to set
-       * the application image's descriptor so that the
-       * uavcan bootloader has the ability to validate the
-       * image crc, size etc
-      */
-    KEEP(*(.app_descriptor))
     *(.text .text.*)
     *(.fixup)
     *(.gnu.warning)

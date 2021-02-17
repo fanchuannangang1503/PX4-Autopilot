@@ -43,9 +43,6 @@
 
 #include <nuttx/progmem.h>
 
-#include "chip.h"
-#include "stm32.h"
-
 #include "flash.h"
 #include "blsched.h"
 

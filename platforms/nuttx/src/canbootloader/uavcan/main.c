@@ -45,7 +45,6 @@
 #include <string.h>
 
 #include "chip.h"
-#include "stm32.h"
 #include "nvic.h"
 
 #include "board.h"
@@ -1089,7 +1088,7 @@ __EXPORT int main(int argc, char *argv[])
 	 *
 	 */
 #if defined(OPT_WAIT_FOR_GETNODEINFO_JUMPER_GPIO)
-	bootloader.wait_for_getnodeinfo = (stm32_gpioread(GPIO_GETNODEINFO_JUMPER) ^
+	bootloader.wait_for_getnodeinfo = (px4_arch_gpioread(GPIO_GETNODEINFO_JUMPER) ^
 					   OPT_WAIT_FOR_GETNODEINFO_JUMPER_GPIO_INVERT);
 #endif
 

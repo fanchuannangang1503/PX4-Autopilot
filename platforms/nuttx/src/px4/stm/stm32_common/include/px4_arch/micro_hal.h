@@ -39,6 +39,7 @@ __BEGIN_DECLS
 #include <stm32_tim.h>
 #include <stm32_spi.h>
 #include <stm32_i2c.h>
+#include <stm32_can.h>
 
 /* STM32/32F7 defines the 96 bit UUID as
  *  init32_t[3] that can be read as bytes/half-words/words
@@ -106,5 +107,24 @@ __BEGIN_DECLS
 #define PX4_MAKE_GPIO_OUTPUT(gpio) (((gpio) & (GPIO_PORT_MASK | GPIO_PIN_MASK)) | (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_CLEAR))
 
 #define PX4_GPIO_PIN_OFF(def) (((def) & (GPIO_PORT_MASK | GPIO_PIN_MASK)) | (GPIO_INPUT|GPIO_FLOAT|GPIO_SPEED_2MHz))
+
+/* CAN bootloader usage */
+
+#define TIMER_HRT_CYCLES_PER_US (STM32_HCLK_FREQUENCY/1000000)
+#define TIMER_HRT_CYCLES_PER_MS (STM32_HCLK_FREQUENCY/1000)
+
+/*  CAN_FiRx where (i=0..27|13, x=1, 2)
+ *                      STM32_CAN1_FIR(i,x)
+ * Using i = 2 does not requier there block
+ * to be enabled nor FINIT in CAN_FMR to be set.
+ * todo:Validate this claim on F2, F3
+ */
+
+#define crc_HiLOC       STM32_CAN1_FIR(2,1)
+#define crc_LoLOC       STM32_CAN1_FIR(2,2)
+#define signature_LOC   STM32_CAN1_FIR(3,1)
+#define bus_speed_LOC   STM32_CAN1_FIR(3,2)
+#define node_id_LOC     STM32_CAN1_FIR(4,1)
+
 
 __END_DECLS

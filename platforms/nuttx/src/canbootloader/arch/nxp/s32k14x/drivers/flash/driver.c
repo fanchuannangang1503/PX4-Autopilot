@@ -1,6 +1,7 @@
 /****************************************************************************
  *
- *   Copyright (c) 2016 PX4 Development Team. All rights reserved.
+ *   Copyright (c) 2021 PX4 Development Team. All rights reserved.
+ *       Author: David Sidrane <david.sidrane@nscdg.com>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -30,27 +31,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  ****************************************************************************/
-#pragma once
-/*
- * This file is a shim to bridge to nuttx_v3
- */
 
-__BEGIN_DECLS
+#include <nuttx/config.h>
+#include "boot_config.h"
 
-#    define PX4_CPU_UUID_BYTE_LENGTH                12
-#    define PX4_CPU_UUID_WORD32_LENGTH              (PX4_CPU_UUID_BYTE_LENGTH/sizeof(uint32_t))
-
-/* The mfguid will be an array of bytes with
- * MSD @ index 0 - LSD @ index PX4_CPU_MFGUID_BYTE_LENGTH-1
- *
- * It will be converted to a string with the MSD on left and LSD on the right most position.
- */
-#    define PX4_CPU_MFGUID_BYTE_LENGTH              PX4_CPU_UUID_BYTE_LENGTH
-
-/*                                                  Separator    nnn:nnn:nnnn     2 char per byte           term */
-#    define PX4_CPU_UUID_WORD32_FORMAT_SIZE         (PX4_CPU_UUID_WORD32_LENGTH-1+(2*PX4_CPU_UUID_BYTE_LENGTH)+1)
-#    define PX4_CPU_MFGUID_FORMAT_SIZE              ((2*PX4_CPU_MFGUID_BYTE_LENGTH)+1)
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+#include <limits.h>
 
 
-#include <arch/board/board.h>
-__END_DECLS
+ssize_t up_progmem_getpage(size_t addr)
+{
+	return 0;
+}
+
+ssize_t up_progmem_eraseblock(size_t block)
+{
+	return 0;
+}
+
+ssize_t up_progmem_write(size_t addr, FAR const void *buf, size_t count)
+{
+	return 0;
+}

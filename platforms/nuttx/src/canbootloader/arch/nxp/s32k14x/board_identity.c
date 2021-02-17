@@ -1,7 +1,7 @@
-
 /****************************************************************************
  *
- *   Copyright (C) 2015 Mark Charlebois. All rights reserved.
+ *   Copyright (C) 2017 PX4 Development Team. All rights reserved.
+ *   Author: @author David Sidrane <david_s5@nscdg.com>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -33,19 +33,25 @@
  ****************************************************************************/
 
 /**
- * @file px4_config.h
-   Configuration flags used in code.
+ * @file board_identity.c
+ * Implementation of S32K based Board identity API
  */
 
-#pragma once
+#include <px4_config.h>
+#include <stdio.h>
+#include <string.h>
 
-#if defined(__PX4_NUTTX)
+#include <hardware/s32k1xx_memorymap.h>
+#include <hardware/s32k1xx_sim.h>
 
-#include <nuttx/config.h>
-#include <nuttx/arch.h>
-#include <px4_arch/micro_hal.h>
-#include <board_config.h>
+#define SWAP_UINT32(x) (((x) >> 24) | (((x) & 0x00ff0000) >> 8) | (((x) & 0x0000ff00) << 8) | ((x) << 24))
 
-#elif defined (__PX4_POSIX)
-# include <board_config.h>
-#endif
+int board_get_mfguid(mfguid_t mfgid)
+{
+	uint32_t *chip_uuid = (uint32_t *) S32K1XX_SIM_UIDH;
+	uint32_t  *rv = (uint32_t *) &mfgid[0];
+
+	for (unsigned int i = 0; i < PX4_CPU_UUID_WORD32_LENGTH; i++) {
+		*rv++ = SWAP_UINT32(chip_uuid[(PX4_CPU_UUID_WORD32_LENGTH - 1) - i]);
+	}
+}

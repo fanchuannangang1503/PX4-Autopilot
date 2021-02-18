@@ -77,7 +77,7 @@
 #define MAX_DATA_RATE                  10000000        ///< max data rate in bytes/s
 #define MAIN_LOOP_DELAY                10000           ///< 100 Hz @ 1000 bytes/s data rate
 
-pthread_mutex_t mavlink_module_mutex = PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t mavlink_module_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 Mavlink *mavlink_module_instances[MAVLINK_COMM_NUM_BUFFERS] {};
 
